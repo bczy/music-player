@@ -1,19 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
+
+const TrackTile = styled.div`
+  display:flex;
+  margin-bottom: 1em;
+`
+const TrackIcon = styled.img`
+  border-radius: 50%;
+  width: 2.5em;
+`
+const TrackInfo = styled.div`
+  align-self: center;
+  margin-left: 1em
+`
+const TrackName = styled.div`
+  color: #8D8D8D;
+  font-size:1em
+`
+const Artist = styled.div`
+  color: #C2C2C2;
+  font-size:.75em
+`
 
 const Track = ({ onClick, track }) =>{ 
-  console.log(track.track.artists[0]) 
-  console.log(track.track.album.images)
   return (
-  <li
-    onClick={onClick}
-  >
-    <div>
-      <img src={track.track.album.images[2].url} alt=""/>
-      <div>{track.track.name}</div>
-      <div>{track.track.artists[0].name}</div>
-    </div>
-  </li>
+    <TrackTile>
+      <TrackIcon src={track.track.album.images[2].url} alt=""/>
+      <TrackInfo>
+        <TrackName>{track.track.name}</TrackName>
+        <Artist>{track.track.artists[0].name.toUpperCase()}</Artist>
+      </TrackInfo>
+    </TrackTile>
 )}
 
 Track.propTypes = {
