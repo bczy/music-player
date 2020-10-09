@@ -1,2 +1,3 @@
 export const GET_PLAYLIST = 'GET_PLAYLIST'
 export const SET_PLAYLIST = 'SET_PLAYLIST'
+export const SET_CURRENT_TRACK = 'SET_CURRENT_TRACK'

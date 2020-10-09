@@ -5,3 +5,7 @@ export const setPlaylist = tracks => ({
   tracks
 })
 
+export const setCurrentTrack = track => ({
+  type: actionTypes.SET_CURRENT_TRACK,
+  track
+})
