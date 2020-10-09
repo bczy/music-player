@@ -2,9 +2,16 @@ import React, { useEffect,useState } from 'react';
 
 import hash from "./utils/hash";
 
+import styled from "styled-components"
+
 import { authEndpoint, clientId, redirectUri, scopes } from "./config";
 import Axios from 'axios';
 import PlayList from './components/Playlist';
+import { Player } from './components/Player';
+
+const AppContainer = styled.div`
+  font-family: arial
+`
 
 function App() {
   const [ token, setToken ] = useState();
@@ -18,7 +25,7 @@ function App() {
     }
   },[]);
   return (
-    <div>
+    <AppContainer>
       {!token ? 
             <a
               href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
@@ -28,8 +35,11 @@ function App() {
               Please login to Spotify to access playlist
             </a>
            :
-          <PlayList token={token} />}
-    </div>
+          ( <>
+              <Player/>
+              <PlayList token={token} />
+            </>)}
+    </AppContainer>
   );
 }
 
