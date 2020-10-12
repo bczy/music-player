@@ -7,7 +7,7 @@ import { getPlayer } from './store/selectors'
 import { setPlayerState, setToken } from './store/actions';
 
 import hash from "./utils/hash";
-import { authEndpoint, clientId, redirectUri, scopes } from "./config";
+import { authEndpoint, clientId, scopes } from "./config";
 
 import PlayList from './components/Playlist';
 import Player  from './components/Player';
@@ -23,7 +23,7 @@ function App({playerState, setPlayerState, setToken}) {
     if (_token) {
       Axios.defaults.headers.common['Authorization'] = `Bearer ${_token}`
       setPlayerState(PLAYER_STATE.PAUSED)
-      setToken(_token)
+      setToken(_token) 
     }
   }, [setPlayerState, setToken]); 
 
@@ -31,8 +31,8 @@ function App({playerState, setPlayerState, setToken}) {
     <AppContainer>
       {playerState === PLAYER_STATE.DISCONNECTED ? 
             <a
-              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-                "%20"
+              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.href)}&scope=${scopes.join(
+                scopes
               )}&response_type=token&show_dialog=true`}
             >
               Please login to Spotify to access playlist
