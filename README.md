@@ -1,4 +1,11 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## To install and run the app:
+* npm install
+* npm run start
+
+Note that:
+* a spotify account is needed to listen to the playlist
+* spotify does not allow to listen more than 30 seconds with API, a embedded player should be integrated
+* a deployed version is available [here](https://bczy.github.io/music-player/)
 
 ## Available Scripts
 
