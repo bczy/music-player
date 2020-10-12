@@ -1,12 +1,12 @@
 import * as types from '../actions/actionTypes'
 
-const currentTrack = (state = { track: null, playedMs: 0 } , action) => {
+const currentTrack = (state = { track: null, elapsedTime: 0 } , action) => {
     switch (action.type) {
       case types.SET_CURRENT_TRACK:
-        console.log("SET",state,action)
         return {...state, track: action.track };
+      case types.SET_ELAPSED_TIME:
+        return {...state, elapsedTime: action.elapsedTime };
       case types.GET_CURRENT_TRACK:
-        console.log("GET", state,action)
         return { currentTrack : state.currentTrack };
       default:
         return state

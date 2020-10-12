@@ -2,9 +2,10 @@ import React from 'react'
 import { connect } from "react-redux";
 import styled from 'styled-components'
 
-import { setCurrentTrack, setPlayerState } from '../store/actions';
+import { setCurrentTrack, setPlayerState, setNextTrack, setPreviousTrack, setElapsedTime } from '../store/actions';
 import { getCurrentTrack, getPlayer, getPlaylist } from '../store/selectors'
 import { PLAYER_STATE } from '../store/reducers/player'
+import store from '../store/index'
 
 import previous from '../assets/previous.png'
 import pause from '../assets/pause.png'
@@ -12,6 +13,8 @@ import next from '../assets/next.png'
 import resume from '../assets/resume.png'
 import { ButtonContainer } from './ButtonContainer';
 import TrackSlider from './TrackSlider';
+
+import { audioPlayer } from '../audioPlayer'
 
 const ControlsContainer = styled.div`
     background-color: #e4e0ef;
@@ -48,50 +51,49 @@ const isLastTrack = (playlist, currentTrack) => {
     return false;
 }
 
-const getCurrentTrackId = (playlist, currentTrack) => {
-    const playlistTracks = playlist.tracks.map(playlistItem => playlistItem.track)
-    return playlistTracks.indexOf(currentTrack.track);
-}
-
-const handlePreviousTrack = (currentTrack, playlist, setCurrentTrack) => {
-    const currentTrackId = getCurrentTrackId(playlist, currentTrack);
-    setCurrentTrack(playlist.tracks[currentTrackId - 1].track)
-}
-
-const handleNextTrack = (currentTrack, playlist, setCurrentTrack) => {
-    const currentTrackId = getCurrentTrackId(playlist, currentTrack);
-    setCurrentTrack(playlist.tracks[currentTrackId + 1].track)
-}
-
 const handleTogglePlay = (setPlayerState,playerState) => {
-    if (playerState === PLAYER_STATE.PLAYING)
+    if (playerState === PLAYER_STATE.PLAYING){
         setPlayerState(PLAYER_STATE.PAUSED)
-    else 
+    }
+    else{
         setPlayerState(PLAYER_STATE.PLAYING)
+    }
+    audioPlayer.togglePauseResume();
 }
 
-const Controls = ({currentTrack, player, playlist, setPlayerState, setCurrentTrack}) => {
+const Controls = ({currentTrack, player, playlist, setPlayerState, setCurrentTrack, setPreviousTrack, setNextTrack}) => {
+    
     return  <ControlsContainer>
         <ButtonsContainer>
             <ButtonContainer 
                 src={previous} 
-                disabled={isFirstTrack(playlist, currentTrack)}
+                disabled={currentTrack.track === null || isFirstTrack(playlist, currentTrack)}
                 alt="previous song" 
-                callBack={() => handlePreviousTrack(currentTrack, playlist,setCurrentTrack)}/> 
+                callBack={() => setPreviousTrack(currentTrack, playlist,setCurrentTrack, setPlayerState)}/> 
             <ButtonContainer 
                 src={getPlayPauseButtonSource(player.playerState)} 
                 alt="toggle play" 
-                disabled={false}
+                disabled={currentTrack.track === null}
                 callBack={() => handleTogglePlay(setPlayerState, player.playerState)}/> 
             <ButtonContainer 
                 src={next} 
-                disabled={isLastTrack(playlist, currentTrack)}
+                disabled={currentTrack.track === null || isLastTrack(playlist, currentTrack)}
                 alt="next song" 
-                callBack={() => handleNextTrack(currentTrack, playlist, setCurrentTrack)}/> 
+                callBack={() => setNextTrack(currentTrack, playlist, setCurrentTrack, setPlayerState)}/> 
         </ButtonsContainer>
         <TrackSlider/>
     </ControlsContainer>
 }
+
+//Functions called from audioPlayer that is not a react component
+window.addEventListener('nextSong',() => {      
+    const { playlist, currentTrack } = store.getState()
+    store.dispatch(setNextTrack(currentTrack, playlist, setCurrentTrack, setPlayerState))
+})
+
+window.addEventListener('updateSliderProgression',(el) => {      
+    store.dispatch(setElapsedTime(el.detail))
+})
 
 const mapStateToProps = state => {
     const currentTrack = getCurrentTrack(state);
@@ -102,6 +104,6 @@ const mapStateToProps = state => {
   
   export default connect(
     mapStateToProps,
-    { setCurrentTrack, setPlayerState }
+    { setCurrentTrack, setPlayerState, setNextTrack, setPreviousTrack }
   )(Controls);
   

@@ -37,6 +37,7 @@ const AlbumCoverContainer = styled.div`
 const AlbumCover = styled.img`
     width: 9.25em;
     filter: drop-shadow(0.25em 0.25em 4px #777);
+    border-radius: 5%;
 `
 
 const Player = ({currentTrack}) => {

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { setCurrentTrack } from '../store/actions';
 import { getCurrentTrack } from '../store/selectors'
 
+import handle from '../assets/handle.png'
 
 const TrackSliderContainer = styled.div`
     font-weight: normal;
@@ -23,17 +24,29 @@ const Slider = styled.div`
     background-color: #c8badd;
     height: 0.2em;
     margin: 0 0.5em;
+    display: flex;
     
 `
+const ElapsedBackground = styled.div`
+    background-color:#F00;
+`
+const Handle = styled.img`
+
+`
+
 const msToMnSec = (playedMs) =>{
     const elapsedSeconds = Math.floor(playedMs / 1000);
     return `${Math.floor(elapsedSeconds/ 60).toString().padStart(2,"0")}:${(elapsedSeconds % 60).toString().padStart(2,"0")}`
 }
+
 const TrackSlider = ({currentTrack}) => {
     const track = {currentTrack}
     return <TrackSliderContainer>
-        <TimeLabel>{msToMnSec(track.currentTrack.playedMs)}</TimeLabel>
-        <Slider></Slider>
+        <TimeLabel>{msToMnSec(track.currentTrack.elapsedTime)}</TimeLabel>
+        <Slider>
+            <ElapsedBackground />
+            <Handle src={handle}/>
+        </Slider>
         <TimeLabel>{track.currentTrack.track ? msToMnSec(track.currentTrack.track.duration_ms): "--:--"}</TimeLabel>
     </TrackSliderContainer>
 }

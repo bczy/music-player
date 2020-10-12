@@ -4,7 +4,7 @@ import styled from "styled-components"
 import Axios from 'axios';
 
 import { getPlayer } from './store/selectors'
-import { setPlayerState } from './store/actions';
+import { setPlayerState, setToken } from './store/actions';
 
 import hash from "./utils/hash";
 import { authEndpoint, clientId, redirectUri, scopes } from "./config";
@@ -17,14 +17,15 @@ const AppContainer = styled.div`
   font-family: arial
 `
 
-function App({playerState, setPlayerState}) {
+function App({playerState, setPlayerState, setToken}) {
   useEffect(()=>{
     const _token = hash.access_token;
     if (_token) {
       Axios.defaults.headers.common['Authorization'] = `Bearer ${_token}`
       setPlayerState(PLAYER_STATE.PAUSED)
+      setToken(_token)
     }
-  }, [setPlayerState]); 
+  }, [setPlayerState, setToken]); 
 
   return (
     <AppContainer>
@@ -53,5 +54,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {  setPlayerState }
+  {  setPlayerState, setToken }
 )(App);
