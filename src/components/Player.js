@@ -2,34 +2,81 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from "react-redux";
 
-import { getPlaylist } from '../store/selectors'
+import { getCurrentTrack } from '../store/selectors'
 import { setPlayerState } from '../store/actions';
 
-import { Controls } from './Controls'
+import { Controls } from './Controls';
+import albumCoverPlaceHolder from '../assets/album-place-holder.png';
 
 const PlayerContainer = styled.div`
-    background-color: #e4e0ef
+    background-color: #e4e0ef;
+    font-weight: bold;
+    border-radius: 5% 5% 0 0;
+    padding: 1em;
 `
-const TrackInfos = styled.div`
-    background-color: #e4e0ef
+const TrackContainer = styled.div`
+    background-color: #e4e0ef;
+    display:flex;
+    align-items: center;
+    margin-bottom:1.5em;
+`
+const PlayerTrackInfo = styled.div`
+`
+const PlayerTrackName = styled.div`
+    color: #26107c;
+    font-size:1.2em;
+`
+const PlayerTrackArtist = styled.div`
+    color: #614e9d;
+    font-size: 1.1em;
 `
 
-export const Player = () => {
+const AlbumCoverContainer = styled.div`
+    margin-right: 1em;
+`
+const AlbumCover = styled.img`
+    width: 9.25em;
+    filter: drop-shadow(0.25em 0.25em 4px #777);
+`
+
+const Player = ({currentTrack}) => {
     return <PlayerContainer>
-        <TrackInfos >
-            Click on a song to play it
-        </TrackInfos>
+        <TrackContainer >
+       {currentTrack.track ? 
+            <>
+                <AlbumCoverContainer>
+                    <AlbumCover
+                            src={currentTrack.track.album.images[0].url} 
+                            alt={`${currentTrack.track.album.name}`}/>
+                </AlbumCoverContainer>
+                <PlayerTrackInfo>
+                    <PlayerTrackName>{currentTrack.track.name}</PlayerTrackName>
+                    <PlayerTrackArtist>{currentTrack.track.artists[0].name}</PlayerTrackArtist>
+                </PlayerTrackInfo>
+            </> :
+            <>
+                <AlbumCoverContainer>
+                    <AlbumCover
+                        src={albumCoverPlaceHolder} 
+                        alt={"Album Placeholder"}/>
+                </AlbumCoverContainer>
+                <PlayerTrackInfo>
+                    <PlayerTrackName>Click on a playlist song to listen it.</PlayerTrackName>
+                </PlayerTrackInfo>
+            </>
+        }
+        </TrackContainer>
         <Controls />
     </PlayerContainer>
 }
 
 const mapStateToProps = state => {
-    const playlist = getPlaylist(state);
-    return { playlist };
-  
-  };
+    const currentTrack = getCurrentTrack(state);
+    console.log(currentTrack)
+    return { currentTrack };
+};
 
 export default connect(
     mapStateToProps,
     { setPlayerState }
-  )(Player);
+)(Player);

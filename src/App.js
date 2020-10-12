@@ -10,7 +10,7 @@ import hash from "./utils/hash";
 import { authEndpoint, clientId, redirectUri, scopes } from "./config";
 
 import PlayList from './components/Playlist';
-import { Player } from './components/Player';
+import Player  from './components/Player';
 import { PLAYER_STATE } from './store/reducers/player';
 
 const AppContainer = styled.div`
@@ -24,7 +24,7 @@ function App({playerState, setPlayerState}) {
       Axios.defaults.headers.common['Authorization'] = `Bearer ${_token}`
       setPlayerState(PLAYER_STATE.PAUSED)
     }
-  },[setPlayerState]); 
+  }, [setPlayerState]); 
 
   return (
     <AppContainer>
