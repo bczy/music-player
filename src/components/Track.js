@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { connect } from "react-redux";
+
+import { setCurrentTrack } from '../store/actions';
+import { getCurrentTrack } from '../store/selectors'
 
 const TrackTile = styled.div`
   display:flex;
@@ -9,6 +13,8 @@ const TrackTile = styled.div`
 const TrackIcon = styled.img`
   border-radius: 50%;
   width: 2.5em;
+  min-width: 2.5em;
+  max-height: 2.5em;
 `
 const TrackInfo = styled.div`
   align-self: center;
@@ -23,9 +29,9 @@ const Artist = styled.div`
   font-size:.75em
 `
 
-const Track = ({ onClick, track }) =>{ 
+const Track = ({ track, setCurrentTrack }) =>{ 
   return (
-    <TrackTile>
+    <TrackTile onClick={()=>{console.log(track);setCurrentTrack(track)}}>
       <TrackIcon src={track.album.images[2].url} alt=""/>
       <TrackInfo>
         <TrackName>{track.name}</TrackName>
@@ -35,8 +41,14 @@ const Track = ({ onClick, track }) =>{
 )}
 
 Track.propTypes = {
-  onClick: PropTypes.func.isRequired,
   track: PropTypes.object.isRequired
 }
+const mapStateToProps = state => {
+  const currentTrack = getCurrentTrack(state);
+  return { currentTrack };
+};
 
-export default Track
+export default connect(
+  mapStateToProps,
+  { setCurrentTrack }
+)(Track);

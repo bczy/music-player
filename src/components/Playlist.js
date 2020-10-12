@@ -12,7 +12,7 @@ const PlayList = ({playlist, setPlaylist}) =>  {
     .then(res => { 
       const { tracks } = res.data;
       setPlaylist(tracks.items);
-  })
+  }).catch(e => console.log(e)) // TODO Make a proper error page
 },[setPlaylist])
 
 return (
