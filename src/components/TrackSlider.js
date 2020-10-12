@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
@@ -28,7 +28,14 @@ const Slider = styled.div`
     
 `
 const ElapsedBackground = styled.div`
-    background-color:#F00;
+    background-color:#261691;
+    width: ${props => {
+        if (props.currentTrack.track !== null){
+            return  props.currentTrack.elapsedTime  / props.currentTrack.track.duration_ms * 100
+        }
+        else return 0
+    }}%
+
 `
 const Handle = styled.img`
 
@@ -44,7 +51,7 @@ const TrackSlider = ({currentTrack}) => {
     return <TrackSliderContainer>
         <TimeLabel>{msToMnSec(track.currentTrack.elapsedTime)}</TimeLabel>
         <Slider>
-            <ElapsedBackground />
+            <ElapsedBackground currentTrack={currentTrack}/>
             <Handle src={handle}/>
         </Slider>
         <TimeLabel>{track.currentTrack.track ? msToMnSec(track.currentTrack.track.duration_ms): "--:--"}</TimeLabel>
