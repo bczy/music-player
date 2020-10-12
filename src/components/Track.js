@@ -1,10 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from "react-redux";
 
-import { setCurrentTrack } from '../store/actions';
+import { setCurrentTrack, setPlayerState } from '../store/actions';
 import { getCurrentTrack } from '../store/selectors'
+import { PLAYER_STATE } from '../store/reducers/player'
 
 const TrackTile = styled.div`
   display:flex;
@@ -28,10 +28,14 @@ const Artist = styled.div`
   color: #C2C2C2;
   font-size:.75em
 `
+function handleClick(setCurrentTrack, setPlayerState,track){
+  setCurrentTrack(track);
+  setPlayerState(PLAYER_STATE.PLAYING);
+}
 
-const Track = ({ track, setCurrentTrack }) =>{ 
+const Track = ({ track, setCurrentTrack, setPlayerState}) =>{ 
   return (
-    <TrackTile onClick={()=>{console.log(track);setCurrentTrack(track)}}>
+    <TrackTile onClick={()=> { handleClick(setCurrentTrack, setPlayerState, track )}}>
       <TrackIcon src={track.album.images[2].url} alt=""/>
       <TrackInfo>
         <TrackName>{track.name}</TrackName>
@@ -40,9 +44,6 @@ const Track = ({ track, setCurrentTrack }) =>{
     </TrackTile>
 )}
 
-Track.propTypes = {
-  track: PropTypes.object.isRequired
-}
 const mapStateToProps = state => {
   const currentTrack = getCurrentTrack(state);
   return { currentTrack };
@@ -50,5 +51,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { setCurrentTrack }
+  { setCurrentTrack, setPlayerState }
 )(Track);

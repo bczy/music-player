@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes'
 
-const currentTrack = (state = { track: null } , action) => {
+const currentTrack = (state = { track: null, playedMs: 0 } , action) => {
     switch (action.type) {
       case types.SET_CURRENT_TRACK:
         console.log("SET",state,action)

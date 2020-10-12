@@ -8,7 +8,6 @@ import { getPlaylist } from '../store/selectors';
 import Track from './Track';
 
 const PlayList = ({playlist, setPlaylist}) =>  {
-  console.log(playlist)
   useEffect(()=>{
     Axios.get(`https://api.spotify.com/v1/playlists/0S3Vix6jcXA54eIIhlegFY`)
     .then(res => { 
@@ -28,7 +27,6 @@ return (
 
 const mapStateToProps = state => {
   const playlist = getPlaylist(state);
-  console.log(playlist)
   return { playlist };
 };
 

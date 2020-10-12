@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getCurrentTrack } from '../store/selectors'
 import { setPlayerState } from '../store/actions';
 
-import { Controls } from './Controls';
+import Controls from './Controls';
 import albumCoverPlaceHolder from '../assets/album-place-holder.png';
 
 const PlayerContainer = styled.div`
@@ -42,7 +42,7 @@ const AlbumCover = styled.img`
 const Player = ({currentTrack}) => {
     return <PlayerContainer>
         <TrackContainer >
-       {currentTrack.track ? 
+        {currentTrack.track ? 
             <>
                 <AlbumCoverContainer>
                     <AlbumCover
@@ -72,7 +72,6 @@ const Player = ({currentTrack}) => {
 
 const mapStateToProps = state => {
     const currentTrack = getCurrentTrack(state);
-    console.log(currentTrack)
     return { currentTrack };
 };
 

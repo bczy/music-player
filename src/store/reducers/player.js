@@ -12,7 +12,9 @@ const player = (state = { playerState: PLAYER_STATE.DISCONNECTED } , action) => 
     case types.SET_PLAYER_STATE:
       return {...state, playerState: action.playerState };
     case types.GET_PLAYER_STATE:
-      return { playerState: action.playerState };
+        return { playerState: action.playerState };
+    case types.TOGGLE_PLAY_STATE:
+          return { ...state, playerState: action.playerState };
     default:
       return state
   }

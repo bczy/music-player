@@ -13,5 +13,5 @@ const playlist = (state = {tracks:[]} , action) => {
         return state
     }
   }
-  
-  export default playlist;
+
+export default playlist;
