@@ -26,10 +26,10 @@ const Artist = styled.div`
 const Track = ({ onClick, track }) =>{ 
   return (
     <TrackTile>
-      <TrackIcon src={track.track.album.images[2].url} alt=""/>
+      <TrackIcon src={track.album.images[2].url} alt=""/>
       <TrackInfo>
-        <TrackName>{track.track.name}</TrackName>
-        <Artist>{track.track.artists[0].name.toUpperCase()}</Artist>
+        <TrackName>{track.name}</TrackName>
+        <Artist>{track.artists[0].name.toUpperCase()}</Artist>
       </TrackInfo>
     </TrackTile>
 )}

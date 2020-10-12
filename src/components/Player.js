@@ -1,5 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from "react-redux";
+
+import { getPlaylist } from '../store/selectors'
+import { setPlayerState } from '../store/actions';
 
 import { Controls } from './Controls'
 
@@ -18,3 +22,14 @@ export const Player = () => {
         <Controls />
     </PlayerContainer>
 }
+
+const mapStateToProps = state => {
+    const playlist = getPlaylist(state);
+    return { playlist };
+  
+  };
+
+export default connect(
+    mapStateToProps,
+    { setPlayerState }
+  )(Player);

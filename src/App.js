@@ -1,32 +1,34 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
+import styled from "styled-components"
+import Axios from 'axios';
+
+import { getPlayer } from './store/selectors'
+import { setPlayerState } from './store/actions';
 
 import hash from "./utils/hash";
-
-import styled from "styled-components"
-
 import { authEndpoint, clientId, redirectUri, scopes } from "./config";
-import Axios from 'axios';
+
 import PlayList from './components/Playlist';
 import { Player } from './components/Player';
+import { PLAYER_STATE } from './store/reducers/player';
 
 const AppContainer = styled.div`
   font-family: arial
 `
 
-function App() {
-  const [ token, setToken ] = useState();
-
+function App({playerState, setPlayerState}) {
   useEffect(()=>{
     const _token = hash.access_token;
-    
     if (_token) {
-      setToken(_token)
       Axios.defaults.headers.common['Authorization'] = `Bearer ${_token}`
+      setPlayerState(PLAYER_STATE.PAUSED)
     }
-  },[]);
+  },[setPlayerState]); 
+
   return (
     <AppContainer>
-      {!token ? 
+      {playerState === PLAYER_STATE.DISCONNECTED ? 
             <a
               href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
                 "%20"
@@ -37,10 +39,19 @@ function App() {
            :
           ( <>
               <Player/>
-              <PlayList token={token} />
+              <PlayList />
             </>)}
     </AppContainer>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  const player  = getPlayer(state);
+  return player;
+
+};
+
+export default connect(
+  mapStateToProps,
+  {  setPlayerState }
+)(App);
