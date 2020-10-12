@@ -6,10 +6,11 @@ import { setPlaylist } from '../store/actions';
 import { getPlaylist } from '../store/selectors';
 
 import Track from './Track';
+import { playlistId } from '../config';
 
 const PlayList = ({playlist, setPlaylist}) =>  {
   useEffect(()=>{
-    Axios.get(`https://api.spotify.com/v1/playlists/0S3Vix6jcXA54eIIhlegFY`)
+    Axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`)
     .then(res => { 
       const { tracks } = res.data;
       setPlaylist(tracks.items);
